@@ -19,7 +19,8 @@
 			<param name="camera_calibration" value="$(arg camera_calibration)" />			
 		</node>
 
-		<node pkg="image_transport" name="image_compressed" type="republish" args="raw in:=image_raw compressed out:=image_raw" />
+		<!-- Converted CompressedImage to Image in ground station to use with ORB_SLAM2 -->
+		<node pkg="image_transport" name="image_uncompressed" type="republish" args="h264 in:=/tello/image_raw compressed out:=/tello/image_repub" />
 
 	</group>
 
