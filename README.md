@@ -1,5 +1,7 @@
 ### Install the dependency
+Need codec-image-transport to decode the streamed video via h264 protocal
 * ```$  sudo apt install ros-melodic-codec-image-transport ```
+Need camera-info-manager-py to build this package
 * ```$  sudo apt install ros-melodic-camera-info-manager-py  ```
 ### Build from source
 * ```$ cd <CATKIN_WS/SRC>```
