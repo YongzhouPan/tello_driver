@@ -20,7 +20,7 @@
 		</node>
 
 		<!-- Converted CompressedImage to Image in ground station to use with ORB_SLAM2 -->
-		<node pkg="image_transport" name="image_uncompressed" type="republish" args="h264 in:=/tello/image_raw raw out:=/tello/image_repub" />
+		<!-- <node pkg="image_transport" name="image_uncompressed" type="republish" args="h264 in:=/tello/image_raw raw out:=/tello/image_repub" /> -->
 
 	</group>
 

@@ -140,6 +140,8 @@ class TelloNode(tello.Tello):
         self.sub_cmd_vel = rospy.Subscriber('cmd_vel', Twist, self.cb_cmd_vel)
         self.sub_fast_mode = rospy.Subscriber(
             'fast_mode', Empty, self.cb_fast_mode)
+        self.sub_up = rospy.Subscriber('up', UInt8, self.cb_up)
+        self.sub_up = rospy.Subscriber('down', UInt8, self.cb_down)
 
         self.subscribe(self.EVENT_FLIGHT_DATA, self.cb_status_log)
 
@@ -444,6 +446,16 @@ class TelloNode(tello.Tello):
         self.set_roll( self.__scale_vel_cmd(msg.linear.x) )
         self.set_yaw( self.__scale_vel_cmd(msg.angular.z) )
         self.set_throttle( self.__scale_vel_cmd(msg.linear.z) )
+    
+    def cb_up(self, msg):
+        """ tell drone to go up to some distance """
+        command = "up {}".format(msg.data)
+        return self.send_command(command)
+    
+    def cb_down(self, msg):
+        """ tell drone to go down to some distance """
+        command = "down {}".format(msg.data)
+        return self.send_command(command)
 
     def cb_flip(self, msg):
         if msg.data < 0 or msg.data > 7: # flip integers between [0,7]
