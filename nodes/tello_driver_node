@@ -8,6 +8,7 @@ from nav_msgs.msg import Odometry
 from dynamic_reconfigure.server import Server
 from tello_driver.msg import TelloStatus
 from tello_driver.cfg import TelloConfig
+from tello_driver.srv import MoveDown, MoveUp
 from cv_bridge import CvBridge, CvBridgeError
 
 import math
@@ -93,6 +94,7 @@ class TelloNode(tello.Tello):
 
         # Connect to drone
         self.log = RospyLogger('Tello')
+        self.log_command = []
 
 #######################################BEGIN#######################################    
         # fast_mode attribute before inheritance from TelloPy object (see override __send_stick_command)
@@ -140,8 +142,13 @@ class TelloNode(tello.Tello):
         self.sub_cmd_vel = rospy.Subscriber('cmd_vel', Twist, self.cb_cmd_vel)
         self.sub_fast_mode = rospy.Subscriber(
             'fast_mode', Empty, self.cb_fast_mode)
-        self.sub_up = rospy.Subscriber('up', UInt8, self.cb_up)
-        self.sub_up = rospy.Subscriber('down', UInt8, self.cb_down)
+        
+
+        # self.sub_up = rospy.Subscriber('up', UInt8, self.cb_up)
+        # self.sub_down = rospy.Subscriber('down', UInt8, self.cb_down)
+
+        self.srv_ser_up = rospy.Service('up', MoveUp, self.sc_up)
+        self.srv_ser_down = rospy.Service('down', MoveDown, self.sc_down)
 
         self.subscribe(self.EVENT_FLIGHT_DATA, self.cb_status_log)
 
@@ -447,14 +454,26 @@ class TelloNode(tello.Tello):
         self.set_yaw( self.__scale_vel_cmd(msg.angular.z) )
         self.set_throttle( self.__scale_vel_cmd(msg.linear.z) )
     
-    def cb_up(self, msg):
+    # def cb_up(self, msg):
+    #     """ tell drone to go up to some distance """
+    #     command = "up {}".format(msg.data)
+    #     return self.send_command(command)
+    
+    # def cb_down(self, msg):
+    #     """ tell drone to go down to some distance """
+    #     command = "down {}".format(msg.data)
+    #     return self.send_command(command)
+    
+    def sc_up(self, req):
         """ tell drone to go up to some distance """
-        command = "up {}".format(msg.data)
+        command = "up {}".format(req.cm)
+        
         return self.send_command(command)
     
-    def cb_down(self, msg):
-        """ tell drone to go down to some distance """
-        command = "down {}".format(msg.data)
+    def sc_down(self, req):
+        """ tell drone to go up to some distance """
+        command = "down {}".format(req.cm)
+        
         return self.send_command(command)
 
     def cb_flip(self, msg):
