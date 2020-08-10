@@ -101,7 +101,7 @@ class TelloNode(tello.Tello):
         self.fast_mode = False        
 #########################################END#######################################    
 
-        super(TelloNode, self).__init__(port=9000)
+        super(TelloNode, self).__init__(port=8999)
         rospy.loginfo('Connecting to drone @ %s:%d' % self.tello_addr)
         self.connect()
         try:
