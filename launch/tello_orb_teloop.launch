@@ -24,7 +24,7 @@
 
 	</group>
 
-	<include file="$(find ORB_SLAM2)/launch/tello_orb.launch"/>
+	<include file="$(find ORB_SLAM3)/launch/tello_orb.launch"/>
 
 	<node name="tello_key_teleop" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen"/>
 
